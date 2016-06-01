@@ -25,6 +25,7 @@ module Data.HList.CommonMain (
 
  -- * Record
  , module Data.HList.Record
+ , module Data.HList.RecordAdv
  -- | quasiquoter 'pun' helps to avoid needing a proxy value with
  -- type 'Label' in the first place: when you take values out of or into
  -- records with pattern matching, the variable name determines the label
@@ -242,6 +243,7 @@ import Data.HList.HArray
 import Data.HList.HOccurs
 import Data.HList.HTypeIndexed
 import Data.HList.Record
+import Data.HList.RecordAdv
 -- import Data.HList.RecordOrd
 import Data.HList.HList hiding (append',
                                 hAppend',

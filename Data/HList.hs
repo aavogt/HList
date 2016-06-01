@@ -13,7 +13,6 @@ can be used instead, but the chosen look better in types.
 module Data.HList (
 
  module Data.HList.CommonMain,
- -- module Data.HList.RecordAdv,
  module Data.STRef,
  module Data.IORef,
  module Data.Typeable,
