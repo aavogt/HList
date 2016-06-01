@@ -4,7 +4,7 @@
 }:
 mkDerivation {
   pname = "HList";
-  version = "0.4.2.0";
+  version = "0.4.2.1";
   sha256 = "15bpglqj33n4y68mg8l2g0rllrcisg2f94wsl3n7rpy43md596fd";
   libraryHaskellDepends = [
     array base base-orphans ghc-prim mtl profunctors tagged
