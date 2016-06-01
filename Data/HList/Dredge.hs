@@ -78,6 +78,7 @@ getSAfromOutputOptic f = f (Proxy :: Proxy s) (Proxy :: Proxy a)
 dredge' label = isSimple (dredge label)
 
 
+{- XXX: Couldn't deduce error.
 -- | dredgeND (named directed only) is the same as 'dredge', except the
 -- result type (@a@) is not used when the label would otherwise
 -- be ambiguous. dredgeND might give better type errors, but otherwise
@@ -88,6 +89,7 @@ dredgeND label = getSAfromOutputOptic $ \ pr _a ->
 
 -- | 'dredgeND' except a simple (s ~ t, a ~ b) optic is produced
 dredgeND' label = isSimple (dredgeND label)
+-}
 
 
 {- | The same as dredgeND', except intended for TIP/TICs because
@@ -101,12 +103,14 @@ be replaced by
 where we might have @s ~ '[Tagged a a, Tagged b b]@
 
 -}
+{- XXX: Couldn't deduce error.
 dredgeTI' label = isSimple lens where
         lens = getSAfromOutputOptic $ \ pr pa ->
             hLens'Path (labelPathEndingWith pr (pa `proxyTypeOf` label))
 
         proxyTypeOf :: p a -> q a -> Label a
         proxyTypeOf _ _ = Label
+-}
 
 
 -- | @HSingleton msg xs x@ is like @'[x] ~ xs@ if that constraint can hold,
@@ -213,10 +217,12 @@ type TypesDontMatch r ns1 vs1 v = ErrShowType r
   :$$: ErrText "which point at types" :<>: ErrShowType vs1 :<>: ErrText "respectively"
   :$$: ErrText "but none of these match the desired type" :<>: ErrShowType v
 
+{- XXX: Couldn't deduce error.
 -- | see 'hLookupByLabelPath'
 hLookupByLabelDredge l r = labelPathEndingWith (toProxy r) l `hLookupByLabelPath` r
   where toProxy :: r x -> Proxy x
         toProxy _ = Proxy
+-}
 
 {- | lookup along a path
 

@@ -206,10 +206,13 @@ module Data.HList.CommonMain (
  -- ** "Data.HList.Dredge"
  -- *** lenses
  , dredge, dredge'
- , dredgeND, dredgeND'
- , dredgeTI'
+ -- XXX: Couldn't deduce error.
+ -- , dredgeND, dredgeND'
+ -- , dredgeTI'
  -- *** plain lookup
- , hLookupByLabelDredge, HasFieldPath
+ -- XXX: Couldn't deduce error.
+ -- , hLookupByLabelDredge
+ , HasFieldPath
 
  -- ** namespaced labels
  , module Data.HList.Label3

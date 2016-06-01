@@ -90,6 +90,7 @@ library
                        Data.HList.Labelable,
                        Data.HList.MakeLabels,
                        Data.HList.Record,
+                       Data.HList.RecordAdv,
                        Data.HList.RecordPuns,
                        Data.HList.RecordU,
                        Data.HList.TIC,
