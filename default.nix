@@ -7,6 +7,8 @@ mkDerivation {
   version = "0.4.2.1";
   src = ./.;
   doCheck = false;
+  # Setup: dist/build/Data/HList/HArray_o_split: does not exist
+  enableSplitObjs = false;
 
   libraryHaskellDepends = [
     array base base-orphans ghc-prim mtl profunctors tagged
