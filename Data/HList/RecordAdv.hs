@@ -126,12 +126,12 @@ instance ( Narrow rout r'
 
 -- | Narrow two records to their least-upper bound
 
-class LubNarrow (a :: [*]) (b :: [*]) (c :: [*]) | a b -> c
+class LubNarrow (a :: *) (b :: [*]) (c :: [*]) | a b -> c
  where
-  lubNarrow :: Record a -> Record b -> (Record c, Record c)
+  lubNarrow :: Record (a ': '[]) -> Record b -> (Record c, Record c)
 
-instance ( HTIntersect (LabelsOf a) (LabelsOf b) lc
-         , H2ProjectByLabels lc a c aout
+instance ( HTIntersect (LabelsOf (a ': '[])) (LabelsOf b) lc
+         , H2ProjectByLabels lc (a ': '[]) c aout
          , H2ProjectByLabels lc b c bout
          , HRLabelSet c
          )
@@ -148,30 +148,42 @@ instance ( HTIntersect (LabelsOf a) (LabelsOf b) lc
 
 -- | List constructors that also LUB together
 
-{-
 data NilLub
 nilLub :: NilLub
 nilLub = undefined
 
-class ConsLub h t l | h t -> l
+class ConsLub (h :: *) (t :: [*]) (l :: [*]) | h t -> l
  where
-  consLub :: h -> t -> l
+  consLub :: h -> Proxy t -> Proxy l
 
-instance ConsLub e  NilLub [e]
+-- XXX: The following instances don't make sense.
+instance ConsLub e  (NilLub ': '[]) (e ': '[])
  where
-  consLub h _ = [h]
+  consLub h _ = Proxy -- XXX: [h]
 
-instance LubNarrow e0 e1 e2 => ConsLub e0 [e1] [e2]
+-- | Narrow head and tail to their LUB type.
+instance LubNarrow e0 e1 e2 => ConsLub e0 e1 e2
  where
-  consLub h t = fst (head z) : map snd (tail z)
+  consLub h t = (fst (head z)) `HCons` (map snd (tail z))
    where
-    z = map (lubNarrow h) (undefined:t)
+    z = undefined
+    -- XXX: z = map (lubNarrow h) (undefined:t)
+
+{-
+data family Lub (l::[*])
+
+data instance Lub '[] = NilLub
+data instance Lub (x ': xs) = x `ConsLub` Lub xs
+
+nilLub = undefined
+-}
 
 
 -- --------------------------------------------------------------------------
 
 -- | Extension of lubNarrow to a heterogeneous list
 
+{-
 class HLub l e | l -> e
  where
   hLub :: HList l -> [e]
