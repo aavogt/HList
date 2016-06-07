@@ -154,30 +154,27 @@ nilLub = undefined
 
 class ConsLub (h :: *) (t :: [*]) (l :: [*]) | h t -> l
  where
-  consLub :: h -> Proxy t -> Proxy l
+  consLub :: h -> Record (t :: [*]) -> Record l
 
--- XXX: The following instances don't make sense.
 instance ConsLub e  (NilLub ': '[]) (e ': '[])
  where
-  consLub h _ = Proxy -- XXX: [h]
+  consLub h _ = Record $ HCons h HNil
 
 -- | Narrow head and tail to their LUB type.
-instance LubNarrow e0 e1 e2 => ConsLub e0 e1 e2
+instance LubNarrow (e0 :: *) (e1 :: [*]) (e2 :: [*])
+  => ConsLub e0 e1 e2
  where
-  consLub h t = (fst (head z)) `HCons` (map snd (tail z))
+  consLub h t =
+    Record $ HCons (unRec $ fst $ hHead z)
+                   (hMapL (unRec . snd) $ hTail z)
    where
-    z = undefined
-    -- XXX: z = map (lubNarrow h) (undefined:t)
-
-{-
-data family Lub (l::[*])
-
-data instance Lub '[] = NilLub
-data instance Lub (x ': xs) = x `ConsLub` Lub xs
-
-nilLub = undefined
--}
-
+    unRec (Record x) = x
+    -- XXX: The type should look similar, but the tuple below has kind * while
+    -- HList expects [*].
+    -- z :: HList (Record e2, Record e2)
+    z = hMapL (\l -> lubNarrow (Record $ h `HCons` HNil)
+                               (Record l))
+              (undefined `HCons` (unRec t))
 
 -- --------------------------------------------------------------------------
 
